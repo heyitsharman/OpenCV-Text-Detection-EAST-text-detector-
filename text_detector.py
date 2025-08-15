@@ -69,14 +69,19 @@ def decode_predictions(scores, geometry, min_confidence):
     return rects, confidences
 
 rects, confidences = decode_predictions(scores, geometry, 0.5)
-boxes = cv2.dnn.NMSBoxesRotated(
-    [((x1+x2)//2, (y1+y2)//2, abs(x2-x1), abs(y2-y1), 0) for (x1, y1, x2, y2) in rects],
-    confidences, 0.5, 0.4
-)
+rotated_rects = [
+    (( (x1 + x2) / 2, (y1 + y2) / 2 ),  # center
+     (abs(x2 - x1), abs(y2 - y1)),      # size (w, h)
+     0.0)                               # angle
+    for (x1, y1, x2, y2) in rects
+]
 
-# Draw bounding boxes & OCR
-for i in range(len(rects)):
-    if i in boxes:
+boxes = cv2.dnn.NMSBoxesRotated(rotated_rects, confidences, 0.5, 0.4)
+
+
+# Draw results
+if len(boxes) > 0:
+    for i in boxes.flatten():
         (startX, startY, endX, endY) = rects[i]
         startX, startY = int(startX * rW), int(startY * rH)
         endX, endY = int(endX * rW), int(endY * rH)
