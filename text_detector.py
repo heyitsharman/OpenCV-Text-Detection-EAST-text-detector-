@@ -3,7 +3,7 @@ import numpy as np
 import pytesseract
 
 # Windows users: set the tesseract path
-# pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -14,7 +14,7 @@ net = cv2.dnn.readNet(pb_path)
 
 
 # Image path
-image_path = "images/sample1.jpg"
+image_path = "images/sample.jpg"
 image = cv2.imread(image_path)
 orig = image.copy()
 (H, W) = image.shape[:2]
