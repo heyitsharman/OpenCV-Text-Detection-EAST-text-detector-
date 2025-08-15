@@ -5,8 +5,13 @@ import pytesseract
 # Windows users: set the tesseract path
 # pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
-# Load EAST model
-net = cv2.dnn.readNet("frozen_east_textDetection.pb")
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+pb_path = os.path.join(BASE_DIR, "models", "frozen_east_text_detection.pb")
+
+import cv2
+net = cv2.dnn.readNet(pb_path)
+
 
 # Image path
 image_path = "images/sample1.jpg"
